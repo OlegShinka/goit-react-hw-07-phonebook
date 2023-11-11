@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
-import { nanoid } from 'nanoid';
 import { Cont, Inp, FormStyle, BtnStyle } from './form.styled';
 import { TiUser, TiSortNumericallyOutline } from 'react-icons/ti';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from 'redux/contactsSlice';
+import { addContact } from 'redux/operations';
+import { selectContacts } from 'redux/selectors';
 
 export const Form = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector(state => state.contacts.contacts);
+  const contacts = useSelector(selectContacts);
 
   const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const [phone, setNumber] = useState('');
 
   const handleChange = evt => {
     const { name, value } = evt.target;
@@ -18,7 +18,7 @@ export const Form = () => {
       case 'name':
         setName(value);
         break;
-      case 'number':
+      case 'phone':
         setNumber(value);
         break;
       default:
@@ -30,9 +30,8 @@ export const Form = () => {
     evt.preventDefault();
     //додаємо до обєкту властивості name, num та їх значення із масивів які повертає кожен useState
     const newContact = {
-      id: nanoid(),
       name: name,
-      number: number,
+      phone: phone,
     };
 
     if (checkContact(newContact.name, contacts)) {
@@ -73,8 +72,8 @@ export const Form = () => {
           <Inp
             autoComplete="on"
             type="tel"
-            value={number}
-            name="number"
+            value={phone}
+            name="phone"
             onChange={handleChange}
             pattern="\\+?\\d{1,4}?[ .\\-\\s]?\\(?\\d{1,3}?\\)?[ .\\-\\s]?\\d{1,4}[ .\\-\\s]?\\d{1,4}[ .\\-\\s]?\\d{1,9}"
             required

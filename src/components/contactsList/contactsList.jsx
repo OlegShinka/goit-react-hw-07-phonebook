@@ -1,13 +1,13 @@
 import { Card } from 'components/contactCard/contactCard';
 import { Cnt, List } from './contactsList.styled';
 import { useSelector } from 'react-redux';
-import { getContacts } from 'redux/contactsSlice';
-import { getFilter } from 'redux/filterSlice';
+import { selectContacts, selectFilter } from 'redux/selectors';
 
 export const ContactsList = () => {
   //забираєм з глобального стейту
-  const contacts = useSelector(getContacts); //contacts.contacts  увага
-  const filter = useSelector(getFilter); // filter.filter увага
+  const contacts = useSelector(selectContacts); //contacts.contacts  увага
+
+  const filter = useSelector(selectFilter); // filter.filter увага
 
   const onContacts = filter => {
     if (filter === '') {
@@ -23,9 +23,9 @@ export const ContactsList = () => {
   return (
     <div>
       <List>
-        {listContacts.map(({ name, number, id }) => (
+        {listContacts.map(({ name, phone, id }) => (
           <Cnt key={id}>
-            <Card name={name} number={number} id={id} />
+            <Card contactName={name} number={phone} id={id} />
           </Cnt>
         ))}
       </List>
